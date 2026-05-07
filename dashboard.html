@@ -21,8 +21,6 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;}
-
-/* TOPBAR */
 .topbar{background:var(--accent);color:#fff;padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .brand{font-family:var(--font-d);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#5af0c8;animation:pulse 2s infinite;}
@@ -35,8 +33,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:
 .btn-load{background:var(--accent2);border:none;border-radius:var(--r);padding:7px 18px;color:#fff;font-family:var(--font-d);font-size:12px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.04em;text-transform:uppercase;}
 .btn-load:hover{opacity:.85;}
 .btn-load:disabled{opacity:.5;cursor:not-allowed;}
-
-/* STATUS */
 .container{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 4rem;}
 .status-bar{display:flex;align-items:center;gap:10px;font-family:var(--font-m);font-size:11px;color:var(--text3);margin-bottom:2rem;padding:10px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);}
 .s-ok{color:var(--green);font-weight:600;}
@@ -44,18 +40,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:
 .s-load{color:var(--yellow);font-weight:600;}
 .s-sep{color:var(--border2);}
 #lastUpdated{margin-left:auto;}
-
-/* HEADER */
 .page-header{margin-bottom:2.5rem;}
 .page-title{font-family:var(--font-d);font-size:clamp(28px,4vw,48px);font-weight:800;line-height:1.05;letter-spacing:-.03em;}
 .page-title span{color:var(--accent2);}
 .page-sub{font-size:13px;color:var(--text3);margin-top:6px;font-style:italic;}
-
-/* SECTION LABEL */
 .sl{font-family:var(--font-m);font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--text3);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
 .sl::after{content:'';flex:1;height:1px;background:var(--border);}
-
-/* KPIs */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2.5rem;}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.25rem 1.5rem;box-shadow:var(--shadow);transition:transform .2s;position:relative;overflow:hidden;}
 .kpi:hover{transform:translateY(-3px);}
@@ -64,14 +54,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:
 .kpi-label{font-family:var(--font-m);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:4px;}
 .kpi-val{font-family:var(--font-d);font-size:28px;font-weight:700;line-height:1;color:var(--text);}
 .kpi-sub{font-size:12px;color:var(--text3);font-style:italic;margin-top:4px;}
-
-/* CHARTS */
 .charts-grid{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:2.5rem;}
 .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem;box-shadow:var(--shadow);}
 .chart-title{font-family:var(--font-d);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;}
 .chart-title small{font-family:var(--font-m);font-size:10px;color:var(--text3);font-weight:400;}
-
-/* TABLE */
 .table-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow);margin-bottom:2.5rem;}
 .toolbar{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--bg3);}
 .search-wrap{position:relative;flex:1;min-width:160px;}
@@ -94,7 +80,6 @@ tbody tr:hover{background:var(--bg3);}
 tbody tr.hidden{display:none;}
 td{padding:12px 16px;vertical-align:middle;}
 .rk{width:44px;font-family:var(--font-m);font-size:12px;color:var(--text3);}
-.medal{font-size:17px;}
 .aname{font-weight:500;color:var(--text);font-family:var(--font-d);font-size:14px;}
 .num{font-family:var(--font-m);font-size:13px;color:var(--text2);}
 .csat-badge{display:inline-flex;align-items:center;font-family:var(--font-m);font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;}
@@ -107,17 +92,12 @@ td{padding:12px 16px;vertical-align:middle;}
 .bbg{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
 .bfill{height:100%;border-radius:2px;}
 .tf{padding:10px 16px;font-family:var(--font-m);font-size:11px;color:var(--text3);background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
-
-/* EMPTY */
 .empty{text-align:center;padding:4rem 2rem;color:var(--text3);}
 .empty .ei{font-size:48px;margin-bottom:1rem;}
 .empty h3{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text2);margin-bottom:.5rem;}
 .empty p{font-size:13px;font-style:italic;}
-
-/* SPINNER */
 .spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 @media(max-width:750px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
   .charts-grid{grid-template-columns:1fr;}
@@ -126,8 +106,6 @@ td{padding:12px 16px;vertical-align:middle;}
 </style>
 </head>
 <body>
-
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="brand"><div class="live-dot"></div>Tribbu · Agentes Live</div>
   <div class="topbar-right">
@@ -139,10 +117,7 @@ td{padding:12px 16px;vertical-align:middle;}
     <button class="btn-load" id="btnLoad">⟳ Actualizar</button>
   </div>
 </div>
-
 <div class="container">
-
-  <!-- STATUS -->
   <div class="status-bar">
     <span id="sDot" class="s-load">●</span>
     <span id="sTxt">Conectando…</span>
@@ -152,14 +127,10 @@ td{padding:12px 16px;vertical-align:middle;}
     <span id="sCount">— agentes</span>
     <span id="lastUpdated">—</span>
   </div>
-
-  <!-- HEADER -->
   <div class="page-header">
     <div class="page-title">Rendimiento del <span>Equipo</span></div>
     <div class="page-sub">Datos en tiempo real desde Intercom · Score combinado volumen + CSAT</div>
   </div>
-
-  <!-- KPIs -->
   <div class="sl">Métricas globales</div>
   <div class="kpi-grid">
     <div class="kpi" style="--kc:var(--accent)"><div class="kpi-icon">💬</div><div class="kpi-label">Conversaciones</div><div class="kpi-val" id="kConv">—</div><div class="kpi-sub">respondidas</div></div>
@@ -167,8 +138,6 @@ td{padding:12px 16px;vertical-align:middle;}
     <div class="kpi" style="--kc:var(--green)"><div class="kpi-icon">⭐</div><div class="kpi-label">CSAT General</div><div class="kpi-val" id="kCsat">—</div><div class="kpi-sub">satisfacción media</div></div>
     <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-icon">🏆</div><div class="kpi-label">Top Agente</div><div class="kpi-val" id="kTop" style="font-size:17px;">—</div><div class="kpi-sub" id="kTopSub">mayor score</div></div>
   </div>
-
-  <!-- CHARTS -->
   <div class="sl">Análisis visual</div>
   <div class="charts-grid">
     <div class="chart-card">
@@ -180,8 +149,6 @@ td{padding:12px 16px;vertical-align:middle;}
       <div style="position:relative;height:280px"><canvas id="cPie"></canvas></div>
     </div>
   </div>
-
-  <!-- TABLE -->
   <div class="sl">Ranking interactivo</div>
   <div class="table-card">
     <div class="toolbar">
@@ -205,53 +172,33 @@ td{padding:12px 16px;vertical-align:middle;}
     </tbody></table></div>
     <div class="tf"><span><span id="rowCount">0</span> agentes · Score = 50% volumen + 50% CSAT</span><span id="tfDate">—</span></div>
   </div>
-
 </div>
-
 <script>
-// ── CONFIG ──
-// Cambia esta URL por la de tu Railway una vez desplegado
-const API_BASE = window.location.hostname === 'localhost'
-  ? 'http://localhost:8000'
-  : '';  // e.g. https://tribbu-dashboard.up.railway.app
-
-// ── STATE ──
+const API_BASE = '';
 let agentData = [], cFilter = 'all', cSearch = '';
 let volChart = null, pieChart = null;
 let sortCol = 'score', sortDir = -1;
-
-// ── DATE DEFAULTS ──
 const fmt = d => d.toISOString().slice(0,10);
 const today = new Date();
 document.getElementById('df').value = fmt(today);
 document.getElementById('dt').value = fmt(today);
-
 const $= id => document.getElementById(id);
 function fmtNum(n){ return n!=null ? n.toLocaleString('es-ES') : '—'; }
 function fmtRt(s){ if(!s) return '—'; if(s<60) return s+'s'; if(s<3600) return Math.round(s/60)+'min'; return (s/3600).toFixed(1)+'h'; }
 function csatClass(v){ if(v==null) return 'cn'; if(v>=70) return 'cg'; if(v>=50) return 'cm'; return 'cb'; }
 function barColor(s){ if(s==null) return '#ccc'; if(s>=60) return '#1a7a4a'; if(s>=40) return '#8a6000'; return '#c02a2a'; }
 function medal(i){ return i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="font-family:var(--font-m);font-size:11px;color:var(--text3)">${i+1}</span>`; }
-function setStatus(t, txt){
-  $('sDot').className = t==='ok'?'s-ok':t==='err'?'s-err':'s-load';
-  $('sDot').textContent = '●'; $('sTxt').textContent = txt;
-}
-
+function setStatus(t, txt){ $('sDot').className = t==='ok'?'s-ok':t==='err'?'s-err':'s-load'; $('sDot').textContent = '●'; $('sTxt').textContent = txt; }
 function calcScores(agents){
-  const withC = agents.filter(a=>a.csat!=null);
   const maxConv = Math.max(...agents.map(a=>a.conv), 1);
-  agents.forEach(a=>{
-    a.score = a.csat!=null ? Math.round((a.conv/maxConv*0.5 + a.csat/100*0.5)*100) : null;
-  });
-  const sorted = [...withC].sort((a,b)=>b.score-a.score);
-  return [...sorted, ...agents.filter(a=>a.csat==null)];
+  agents.forEach(a=>{ a.score = a.csat!=null ? Math.round((a.conv/maxConv*0.5 + a.csat/100*0.5)*100) : null; });
+  const withC = agents.filter(a=>a.csat!=null).sort((a,b)=>b.score-a.score);
+  return [...withC, ...agents.filter(a=>a.csat==null)];
 }
-
 function renderTable(data){
   const tbody = $('tbody');
   const maxScore = Math.max(...data.filter(a=>a.score!=null).map(a=>a.score),1);
-  tbody.innerHTML = '';
-  let shown = 0;
+  tbody.innerHTML = ''; let shown = 0;
   const ranked = data.filter(a=>a.score!=null);
   data.forEach(a=>{
     const ri = ranked.indexOf(a);
@@ -259,121 +206,51 @@ function renderTable(data){
     const tr = document.createElement('tr');
     if(!pass) tr.classList.add('hidden'); else shown++;
     const bw = a.score ? Math.round(a.score/maxScore*100) : 0;
-    tr.innerHTML = `
-      <td class="rk">${ri>=0?medal(ri):'<span style="color:var(--text3)">—</span>'}</td>
-      <td><span class="aname">${a.name}</span></td>
-      <td class="num">${fmtNum(a.conv)}</td>
-      <td><span class="csat-badge ${csatClass(a.csat)}">${a.csat!=null?a.csat.toFixed(1)+'%':'N/D'}</span></td>
-      <td><div class="score-row"><span class="snum">${a.score??'—'}</span><div class="bbg"><div class="bfill" style="width:${bw}%;background:${barColor(a.score)}"></div></div></div></td>
-      <td class="num">${fmtNum(a.closed)}</td>
-      <td class="num">${fmtRt(a.median_rt)}</td>`;
+    tr.innerHTML = `<td class="rk">${ri>=0?medal(ri):'<span style="color:var(--text3)">—</span>'}</td><td><span class="aname">${a.name}</span></td><td class="num">${fmtNum(a.conv)}</td><td><span class="csat-badge ${csatClass(a.csat)}">${a.csat!=null?a.csat.toFixed(1)+'%':'N/D'}</span></td><td><div class="score-row"><span class="snum">${a.score??'—'}</span><div class="bbg"><div class="bfill" style="width:${bw}%;background:${barColor(a.score)}"></div></div></div></td><td class="num">${fmtNum(a.closed)}</td><td class="num">${fmtRt(a.median_rt)}</td>`;
     tbody.appendChild(tr);
   });
   $('rowCount').textContent = shown;
 }
-
 function renderCharts(agents){
   const top10 = [...agents].filter(a=>a.csat!=null).sort((a,b)=>b.conv-a.conv).slice(0,10);
-  const good = agents.filter(a=>a.csat!=null&&a.csat>=70).length;
-  const mid  = agents.filter(a=>a.csat!=null&&a.csat>=50&&a.csat<70).length;
-  const bad  = agents.filter(a=>a.csat!=null&&a.csat<50).length;
-  const none = agents.filter(a=>a.csat==null).length;
-
+  const good=agents.filter(a=>a.csat!=null&&a.csat>=70).length, mid=agents.filter(a=>a.csat!=null&&a.csat>=50&&a.csat<70).length, bad=agents.filter(a=>a.csat!=null&&a.csat<50).length, none=agents.filter(a=>a.csat==null).length;
   const tCfg = { backgroundColor:'#fff', titleColor:'#1a1714', bodyColor:'#6b6560', borderColor:'rgba(0,0,0,.1)', borderWidth:1 };
-
   if(volChart) volChart.destroy();
-  volChart = new Chart($('cVol'),{
-    type:'bar',
-    data:{ labels:top10.map(a=>a.name.split(' ')[0]), datasets:[{
-      data:top10.map(a=>a.conv),
-      backgroundColor:top10.map(a=>a.csat>=70?'#1a7a4a':a.csat>=50?'#8a6000':'#c02a2a'),
-      borderRadius:5,borderSkipped:false
-    }]},
-    options:{ responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.parsed.y} convs`}}},
-      scales:{x:{ticks:{color:'#a09890',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#a09890',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}
-    }
-  });
-
+  volChart = new Chart($('cVol'),{ type:'bar', data:{ labels:top10.map(a=>a.name.split(' ')[0]), datasets:[{ data:top10.map(a=>a.conv), backgroundColor:top10.map(a=>a.csat>=70?'#1a7a4a':a.csat>=50?'#8a6000':'#c02a2a'), borderRadius:5, borderSkipped:false }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.parsed.y} convs`}}}, scales:{x:{ticks:{color:'#a09890',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#a09890',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
   if(pieChart) pieChart.destroy();
-  pieChart = new Chart($('cPie'),{
-    type:'doughnut',
-    data:{ labels:['CSAT ≥70%','CSAT 50-69%','CSAT <50%','Sin datos'],
-      datasets:[{ data:[good,mid,bad,none], backgroundColor:['#1a7a4a','#8a6000','#c02a2a','#d0cdc4'], borderWidth:3, borderColor:'#fff' }]},
-    options:{ responsive:true,maintainAspectRatio:false,cutout:'65%',
-      plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},color:'#6b6560',boxWidth:10,padding:12}},
-      tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} agentes`}}}
-    }
-  });
+  pieChart = new Chart($('cPie'),{ type:'doughnut', data:{ labels:['CSAT ≥70%','CSAT 50-69%','CSAT <50%','Sin datos'], datasets:[{ data:[good,mid,bad,none], backgroundColor:['#1a7a4a','#8a6000','#c02a2a','#d0cdc4'], borderWidth:3, borderColor:'#fff' }]}, options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},color:'#6b6560',boxWidth:10,padding:12}}, tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} agentes`}}}}});
 }
-
 async function loadData(){
   const from = $('df').value, to = $('dt').value;
   if(!from||!to){alert('Selecciona fechas');return;}
   setStatus('load','Cargando datos…');
   $('btnLoad').disabled = true;
-
   try {
-    const url = `${API_BASE}/api/agents?date_from=${from}&date_to=${to}`;
-    const res = await fetch(url);
+    const res = await fetch(`${API_BASE}/api/agents?date_from=${from}&date_to=${to}`);
     if(!res.ok) throw new Error(`API error ${res.status}`);
     const json = await res.json();
-
     agentData = calcScores(json.agents);
     const top = agentData.find(a=>a.score!=null);
-
-    $('kConv').textContent   = fmtNum(json.total_convs);
+    $('kConv').textContent = fmtNum(json.total_convs);
     $('kClosed').textContent = fmtNum(json.total_closed);
-    $('kCsat').textContent   = json.global_csat!=null ? json.global_csat.toFixed(1)+'%' : '—';
-    $('kTop').textContent    = top ? top.name.split(' ')[0] : '—';
+    $('kCsat').textContent = json.global_csat!=null ? json.global_csat.toFixed(1)+'%' : '—';
+    $('kTop').textContent = top ? top.name.split(' ')[0] : '—';
     $('kTopSub').textContent = top ? `Score ${top.score} · ${top.conv} convs` : '—';
     $('sPeriod').textContent = `${json.period.from} → ${json.period.to}`;
-    $('sCount').textContent  = `${agentData.length} agentes`;
+    $('sCount').textContent = `${agentData.length} agentes`;
     $('lastUpdated').textContent = `Actualizado: ${new Date().toLocaleTimeString('es-ES')}`;
-    $('tfDate').textContent  = `Periodo: ${json.period.from} al ${json.period.to}`;
-
+    $('tfDate').textContent = `Periodo: ${json.period.from} al ${json.period.to}`;
     renderCharts(agentData);
     renderTable(agentData);
     setStatus('ok', `${json.total_convs} conversaciones cargadas`);
-  } catch(e){
-    setStatus('err', `Error: ${e.message}`);
-    console.error(e);
-  } finally {
-    $('btnLoad').disabled = false;
-  }
+  } catch(e){ setStatus('err', `Error: ${e.message}`); console.error(e); }
+  finally { $('btnLoad').disabled = false; }
 }
-
-// FILTERS
-document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active'); cFilter=b.dataset.f; renderTable(agentData);
-}));
-
+document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active')); b.classList.add('active'); cFilter=b.dataset.f; renderTable(agentData); }));
 $('search').addEventListener('input',e=>{ cSearch=e.target.value.toLowerCase(); renderTable(agentData); });
-
-// SORT
-document.querySelectorAll('thead th[data-col]').forEach(th=>th.addEventListener('click',()=>{
-  const col = th.dataset.col;
-  if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=-1;}
-  document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted'));
-  th.classList.add('sorted');
-  agentData.sort((a,b)=>{let av=a[col],bv=b[col];if(av==null)return 1;if(bv==null)return-1;return(av>bv?1:av<bv?-1:0)*sortDir;});
-  renderTable(agentData);
-}));
-
-// EXPORT
-$('btnExport').addEventListener('click',()=>{
-  if(!agentData.length)return;
-  const rows=[['Agente','Convs','CSAT (%)','Score','Cerradas','T.Resp (s)']];
-  agentData.forEach(a=>rows.push([a.name,a.conv,a.csat??'',a.score??'',a.closed,a.median_rt??'']));
-  const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
-  a.download=`agentes_${$('df').value}_${$('dt').value}.csv`;
-  a.click();
-});
-
-// AUTO-LOAD
+document.querySelectorAll('thead th[data-col]').forEach(th=>th.addEventListener('click',()=>{ const col=th.dataset.col; if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=-1;} document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted')); th.classList.add('sorted'); agentData.sort((a,b)=>{let av=a[col],bv=b[col];if(av==null)return 1;if(bv==null)return-1;return(av>bv?1:av<bv?-1:0)*sortDir;}); renderTable(agentData); }));
+$('btnExport').addEventListener('click',()=>{ if(!agentData.length)return; const rows=[['Agente','Convs','CSAT (%)','Score','Cerradas','T.Resp (s)']]; agentData.forEach(a=>rows.push([a.name,a.conv,a.csat??'',a.score??'',a.closed,a.median_rt??''])); const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'})); a.download=`agentes_${$('df').value}_${$('dt').value}.csv`; a.click(); });
+$('btnLoad').addEventListener('click', loadData);
 window.addEventListener('load', loadData);
 </script>
 </body>
