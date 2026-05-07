@@ -267,7 +267,8 @@ td{padding:11px 14px;vertical-align:middle;}
 <script>
 const MAX_VOL=2027;
 const MIN_CSAT_VOL=20;
-const PERIOD_TOTAL=21214; // Summary real del CSV 27abr-6may
+const PERIOD_TOTAL=21214;
+const PERIOD_CSAT=56.0;
 const RUBRIC_DATA=[
   {name:'Luis',vol:2041,csat:72.0,T:4,H:4,E:4,Q:5,C:4,CL:5,rub:86.7,cx:4.33,score:85.4,level:'ex',p:[{t:'Diagnóstico exhaustivo (6+ preguntas)',g:true},{t:'Mayor volumen del equipo',g:true},{t:'Tono algo menos cálido que top tier',g:false}],n:'3 tickets. 6 preguntas diagnóstico específicas sobre bug QR. Mayor volumen del equipo con CSAT alto.'},
   {name:'Mayra Acosta',vol:1809,csat:68.9,T:4,H:2,E:2,Q:2,C:2,CL:3,rub:50.0,cx:2.5,score:68.5,level:'co',p:[{t:'Ocasionalmente buena (viajes programados)',g:true},{t:'Copy-paste ¿Finalizaste verificación?',g:false},{t:'Mayra por dios hazme caso — sin respuesta',g:false}],n:'3 tickets. T1 buena explicación. T2 copy-paste exacto. T3 GRAVE: usuaria escribe Mayra por dios hazme caso tras 2+ semanas sin cobro. Sin respuesta.'},
@@ -292,7 +293,7 @@ const RUBRIC_DATA=[
   {name:'Tano Spinelli',vol:510,csat:50.0,T:5,H:5,E:4,Q:5,C:4,CL:5,rub:93.3,cx:4.67,score:55.5,level:'ex',p:[{t:'Conciso y directo al grano',g:true},{t:'Sin relleno ni plantillas',g:true},{t:'CSAT bajo no refleja calidad real',g:false}],n:'3 tickets. Respuestas breves y efectivas. El más conciso del equipo sin sacrificar calidad.'},
   {name:'Yenssi López',vol:408,csat:20.0,T:3,H:2,E:2,Q:2,C:2,CL:3,rub:46.7,cx:2.33,score:28.6,level:'co',p:[{t:'CSAT 20% — segundo más bajo',g:false},{t:'Estimación por CSAT muy bajo',g:false}],n:'Estimación basada en CSAT 20% y patrones del equipo.'},
   {name:'Génesis Aponte',vol:358,csat:40.0,T:3,H:3,E:3,Q:3,C:3,CL:3,rub:60.0,cx:3.0,score:38.8,level:'bu',p:[{t:'Evaluación basada en CSAT y patrones',g:false},{t:'Tickets directos pendientes',g:false}],n:'Estimación conservadora basada en CSAT 40% y patrones del equipo.'},
-  {name:'Kevin Almeyda',vol:262,csat:66.7,T:5,H:5,E:4,Q:5,C:4,CL:5,rub:93.3,cx:4.67,score:57.0,level:'ex',p:[{t:'Honesto sobre limitaciones del sistema',g:true},{t:'Explica BBono entre provincias',g:true},{t:'Menor volumen del equipo',g:false}],n:'3 tickets. Honestidad sobre limitaciones, tono cálido. Explica BBono entre provincias.'},
+  {name:'Kevin Almeyda',vol:229,csat:100.0,T:5,H:5,E:4,Q:5,C:4,CL:5,rub:93.3,cx:4.67,score:57.0,level:'ex',p:[{t:'Honesto sobre limitaciones del sistema',g:true},{t:'Explica BBono entre provincias',g:true},{t:'Menor volumen del equipo',g:false}],n:'3 tickets. Honestidad sobre limitaciones, tono cálido. Explica BBono entre provincias.'},
   {name:'Joanna Mogollón',vol:232,csat:33.3,T:3,H:2,E:2,Q:2,C:2,CL:3,rub:46.7,cx:2.33,score:30.2,level:'co',p:[{t:'Copy-paste ¿Finalizaste verificación?',g:false},{t:'Errores gramaticales',g:false},{t:'Respuesta vaga tras el template',g:false}],n:'3 tickets. Template copy-paste. Segunda respuesta vaga cuando el usuario YA hizo los 3 viajes.'}
 ];
 
@@ -348,7 +349,7 @@ function buildFromCSV(key,label){
     const score=Math.round(volPct*(0.33+(0.33-csatW))+csat*csatW+a.rub*0.33);
     return {...a,vol,csat,score,medRt:null,level:a.rub>=75?'ex':a.rub>=60?'bu':a.rub>=45?'co':'me'};
   }).sort((a,b)=>b.score-a.score);
-  const total=PERIOD_TOTAL;
+  const total=agentData.reduce((s,a)=>s+a.vol,0);
   const wc=agentData.filter(a=>a.csat!=null);
   const avgCsat=wc.reduce((s,a)=>s+a.csat,0)/(wc.length||1);
   const avgCx=agentData.reduce((s,a)=>s+a.cx,0)/agentData.length;
@@ -359,7 +360,7 @@ function buildFromCSV(key,label){
   $('lastUpdated').textContent='Actualizado: '+new Date().toLocaleTimeString('es-ES');
   $('liveTxt').textContent='En vivo'; $('tfPeriod').textContent=label;
   $('kConv').textContent=fmtN(total); $('kEx').textContent=agentData.filter(a=>a.rub>=75).length;
-  $('kCsat').textContent=avgCsat.toFixed(1)+'%'; $('kCsatSub').textContent=label;
+  $('kCsat').textContent=PERIOD_CSAT.toFixed(1)+'%'; $('kCsatSub').textContent='271/484 · '+label;
   $('kCx').textContent=avgCx.toFixed(2)+'/5';
   $('kTop').textContent=top?top.name.split(' ')[0]:'—';
   $('kTopSub').textContent=top?'Score '+top.score+' · '+fmtN(top.vol)+' convs':'—';
@@ -439,8 +440,7 @@ function renderAll(from, to){
   setTimeout(()=>{
     agentData = aggregateRange(from, to).sort((a,b)=>b.score-a.score);
     if(!agentData.length){ $('sDot').className='s-err'; $('sTxt').textContent='Sin datos'; return; }
-    const isMain = from==='2026-04-27' && to==='2026-05-06';
-    const total = isMain ? PERIOD_TOTAL : agentData.reduce((s,a)=>s+a.vol,0);
+    const total = agentData.reduce((s,a)=>s+a.vol,0);
     const avgCsat = agentData.reduce((s,a)=>s+a.csat,0)/agentData.length;
     const avgCx = agentData.reduce((s,a)=>s+a.cx,0)/agentData.length;
     const top = agentData[0];
@@ -454,7 +454,7 @@ function renderAll(from, to){
     $('tfPeriod').textContent=pStr;
     $('kConv').textContent=fmtN(total);
     $('kEx').textContent=agentData.filter(a=>a.rub>=75).length;
-    $('kCsat').textContent=avgCsat.toFixed(1)+'%';
+    $('kCsat').textContent=PERIOD_CSAT.toFixed(1)+'%';
     $('kCsatSub').textContent=`${from===to?from:'periodo ' + pStr}`;
     $('kCx').textContent=avgCx.toFixed(2)+'/5';
     $('kTop').textContent=top?top.name.split(' ')[0]:'—';
@@ -505,11 +505,11 @@ function renderTable(){
   $('tbody').innerHTML=data.map(a=>{
     const c=qColor(a.rub);
     const pos=ranked.indexOf(a.name)+1;
-    return `<tr onclick="showDetail('${a.name}')">
+    return `<tr data-n="${a.name.replace(/"/g,'&quot;')}" class="agent-row">
       <td class="rk" style="font-family:var(--font-m);font-size:12px;color:var(--black4);font-weight:600">${pos}</td>
       <td class="aname">${a.name}</td>
       <td class="num">${fmtN(a.vol)}</td>
-      <td><span class="${csatCls(a.csat)}">${a.csat.toFixed(1)}%</span></td>
+      <td><span class="${csatCls(a.csat)}">${a.csat!=null?a.csat.toFixed(1):"—"}%</span></td>
       <td>${levelBadge(a.level,a.rub)}</td>
       <td style="text-align:center"><span style="font-family:var(--font-m);font-size:28px;font-weight:800;letter-spacing:-0.04em;color:${c};line-height:1">${a.score}</span></td>
     </tr>`;
@@ -540,8 +540,16 @@ function showDetail(name){
 function closeDP(){$('dp').classList.remove('vis');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDP();});
 
+document.getElementById('tbody').addEventListener('click',function(e){
+  const row=e.target.closest('.agent-row');
+  if(row){showDetail(row.dataset.n);}
+});
 document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tbody').addEventListener('click',function(e){
+  const row=e.target.closest('.agent-row');
+  if(row){showDetail(row.dataset.n);}
+});
+document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));
   b.classList.add('active'); cFilter=b.dataset.f; renderTable();
 }));
 $('search').addEventListener('input',e=>{cSearch=e.target.value;renderTable();});
@@ -588,13 +596,13 @@ function loadMainPeriod(){
   $('tfPeriod').textContent=label;
   $('kConv').textContent=fmtN(PERIOD_TOTAL);
   $('kEx').textContent=agentData.filter(a=>a.rub>=75).length;
-  $('kCsat').textContent=avgCsat.toFixed(1)+'%';
-  $('kCsatSub').textContent=label;
+  $('kCsat').textContent=PERIOD_CSAT.toFixed(1)+'%';
+  $('kCsatSub').textContent='271/484 · '+label;
   $('kCx').textContent=avgCx.toFixed(2)+'/5';
   $('kTop').textContent=top?top.name.split(' ')[0]:'—';
   $('kTopSub').textContent=top?'Score '+top.score+' · '+fmtN(top.vol)+' convs':'—';
   $('sDot').className='s-ok';
-  $('sTxt').textContent=fmtN(PERIOD_TOTAL)+' conversaciones';
+  $('sTxt').textContent=fmtN(PERIOD_TOTAL)+' conversaciones · CSAT '+PERIOD_CSAT+'%';
   $('df').value='2026-04-27'; $('dt').value='2026-05-06';
   renderCharts(); renderInsights(); renderTable();
 }
