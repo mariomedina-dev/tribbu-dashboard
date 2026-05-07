@@ -21,18 +21,19 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;}
-.topbar{background:var(--accent);color:#fff;padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar{background:var(--accent);color:#fff;padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .brand{font-family:var(--font-d);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#5af0c8;animation:pulse 2s infinite;}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(90,240,200,.6)}70%{box-shadow:0 0 0 7px rgba(90,240,200,0)}100%{box-shadow:0 0 0 0 rgba(90,240,200,0)}}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.date-wrap{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:5px 12px;}
-.date-wrap input[type=date]{background:transparent;border:none;color:#fff;font-family:var(--font-m);font-size:12px;outline:none;cursor:pointer;width:118px;}
-.date-wrap input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer;}
-.sep-arrow{color:rgba(255,255,255,.4);font-size:11px;}
-.btn-load{background:var(--accent2);border:none;border-radius:var(--r);padding:7px 18px;color:#fff;font-family:var(--font-d);font-size:12px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.04em;text-transform:uppercase;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.date-group{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:6px 14px;}
+.date-group label{font-family:var(--font-m);font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;}
+.date-group input[type=date]{background:transparent;border:none;color:#fff;font-family:var(--font-m);font-size:13px;outline:none;cursor:pointer;width:auto;}
+.date-group input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer;opacity:.7;}
+.sep-arrow{color:rgba(255,255,255,.4);font-size:13px;font-family:var(--font-m);}
+.btn-load{background:var(--accent2);border:none;border-radius:var(--r);padding:8px 20px;color:#fff;font-family:var(--font-d);font-size:12px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.05em;text-transform:uppercase;}
 .btn-load:hover{opacity:.85;}
-.btn-load:disabled{opacity:.5;cursor:not-allowed;}
+.btn-load:disabled{opacity:.4;cursor:not-allowed;}
 .container{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 4rem;}
 .status-bar{display:flex;align-items:center;gap:10px;font-family:var(--font-m);font-size:11px;color:var(--text3);margin-bottom:2rem;padding:10px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);}
 .s-ok{color:var(--green);font-weight:600;}
@@ -96,12 +97,11 @@ td{padding:12px 16px;vertical-align:middle;}
 .empty .ei{font-size:48px;margin-bottom:1rem;}
 .empty h3{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text2);margin-bottom:.5rem;}
 .empty p{font-size:13px;font-style:italic;}
-.spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:750px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
   .charts-grid{grid-template-columns:1fr;}
-  .date-wrap{display:none;}
+  .date-group{display:none;}
 }
 </style>
 </head>
@@ -109,18 +109,20 @@ td{padding:12px 16px;vertical-align:middle;}
 <div class="topbar">
   <div class="brand"><div class="live-dot"></div>Tribbu · Agentes Live</div>
   <div class="topbar-right">
-    <div class="date-wrap">
-      <input type="date" id="df">
+    <div class="date-group">
+      <label>Desde</label>
+      <input type="date" id="df" lang="es">
       <span class="sep-arrow">→</span>
-      <input type="date" id="dt">
+      <label>Hasta</label>
+      <input type="date" id="dt" lang="es">
     </div>
     <button class="btn-load" id="btnLoad">⟳ Actualizar</button>
   </div>
 </div>
 <div class="container">
   <div class="status-bar">
-    <span id="sDot" class="s-load">●</span>
-    <span id="sTxt">Conectando…</span>
+    <span id="sDot">●</span>
+    <span id="sTxt">Selecciona fechas y pulsa Actualizar</span>
     <span class="s-sep">·</span>
     <span id="sPeriod">—</span>
     <span class="s-sep">·</span>
@@ -168,7 +170,7 @@ td{padding:12px 16px;vertical-align:middle;}
       <th data-col="closed">Cerradas ↕</th>
       <th data-col="median_rt">T.Respuesta ↕</th>
     </tr></thead><tbody id="tbody">
-      <tr><td colspan="7"><div class="empty"><div class="ei">📡</div><h3>Sin datos</h3><p>Pulsa Actualizar para conectar con Intercom.</p></div></td></tr>
+      <tr><td colspan="7"><div class="empty"><div class="ei">📡</div><h3>Sin datos</h3><p>Selecciona fechas y pulsa Actualizar.</p></div></td></tr>
     </tbody></table></div>
     <div class="tf"><span><span id="rowCount">0</span> agentes · Score = 50% volumen + 50% CSAT</span><span id="tfDate">—</span></div>
   </div>
@@ -178,27 +180,37 @@ const API_BASE = '';
 let agentData = [], cFilter = 'all', cSearch = '';
 let volChart = null, pieChart = null;
 let sortCol = 'score', sortDir = -1;
-const fmt = d => d.toISOString().slice(0,10);
-const today = new Date();
-document.getElementById('df').value = fmt(today);
-document.getElementById('dt').value = fmt(today);
+
+// Fecha por defecto: hoy en formato YYYY-MM-DD
+const hoy = new Date();
+const fmtDate = d => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+};
+document.getElementById('df').value = fmtDate(hoy);
+document.getElementById('dt').value = fmtDate(hoy);
+
 const $= id => document.getElementById(id);
 function fmtNum(n){ return n!=null ? n.toLocaleString('es-ES') : '—'; }
 function fmtRt(s){ if(!s) return '—'; if(s<60) return s+'s'; if(s<3600) return Math.round(s/60)+'min'; return (s/3600).toFixed(1)+'h'; }
 function csatClass(v){ if(v==null) return 'cn'; if(v>=70) return 'cg'; if(v>=50) return 'cm'; return 'cb'; }
 function barColor(s){ if(s==null) return '#ccc'; if(s>=60) return '#1a7a4a'; if(s>=40) return '#8a6000'; return '#c02a2a'; }
 function medal(i){ return i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="font-family:var(--font-m);font-size:11px;color:var(--text3)">${i+1}</span>`; }
-function setStatus(t, txt){ $('sDot').className = t==='ok'?'s-ok':t==='err'?'s-err':'s-load'; $('sDot').textContent = '●'; $('sTxt').textContent = txt; }
+function setStatus(t, txt){ $('sDot').className = t==='ok'?'s-ok':t==='err'?'s-err':'s-load'; $('sDot').textContent='●'; $('sTxt').textContent=txt; }
+
 function calcScores(agents){
   const maxConv = Math.max(...agents.map(a=>a.conv), 1);
   agents.forEach(a=>{ a.score = a.csat!=null ? Math.round((a.conv/maxConv*0.5 + a.csat/100*0.5)*100) : null; });
   const withC = agents.filter(a=>a.csat!=null).sort((a,b)=>b.score-a.score);
   return [...withC, ...agents.filter(a=>a.csat==null)];
 }
+
 function renderTable(data){
   const tbody = $('tbody');
   const maxScore = Math.max(...data.filter(a=>a.score!=null).map(a=>a.score),1);
-  tbody.innerHTML = ''; let shown = 0;
+  tbody.innerHTML=''; let shown=0;
   const ranked = data.filter(a=>a.score!=null);
   data.forEach(a=>{
     const ri = ranked.indexOf(a);
@@ -211,47 +223,49 @@ function renderTable(data){
   });
   $('rowCount').textContent = shown;
 }
+
 function renderCharts(agents){
-  const top10 = [...agents].filter(a=>a.csat!=null).sort((a,b)=>b.conv-a.conv).slice(0,10);
+  const top10=[...agents].filter(a=>a.csat!=null).sort((a,b)=>b.conv-a.conv).slice(0,10);
   const good=agents.filter(a=>a.csat!=null&&a.csat>=70).length, mid=agents.filter(a=>a.csat!=null&&a.csat>=50&&a.csat<70).length, bad=agents.filter(a=>a.csat!=null&&a.csat<50).length, none=agents.filter(a=>a.csat==null).length;
-  const tCfg = { backgroundColor:'#fff', titleColor:'#1a1714', bodyColor:'#6b6560', borderColor:'rgba(0,0,0,.1)', borderWidth:1 };
+  const tCfg={backgroundColor:'#fff',titleColor:'#1a1714',bodyColor:'#6b6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1};
   if(volChart) volChart.destroy();
-  volChart = new Chart($('cVol'),{ type:'bar', data:{ labels:top10.map(a=>a.name.split(' ')[0]), datasets:[{ data:top10.map(a=>a.conv), backgroundColor:top10.map(a=>a.csat>=70?'#1a7a4a':a.csat>=50?'#8a6000':'#c02a2a'), borderRadius:5, borderSkipped:false }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.parsed.y} convs`}}}, scales:{x:{ticks:{color:'#a09890',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#a09890',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
+  volChart=new Chart($('cVol'),{type:'bar',data:{labels:top10.map(a=>a.name.split(' ')[0]),datasets:[{data:top10.map(a=>a.conv),backgroundColor:top10.map(a=>a.csat>=70?'#1a7a4a':a.csat>=50?'#8a6000':'#c02a2a'),borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.parsed.y} convs`}}},scales:{x:{ticks:{color:'#a09890',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#a09890',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
   if(pieChart) pieChart.destroy();
-  pieChart = new Chart($('cPie'),{ type:'doughnut', data:{ labels:['CSAT ≥70%','CSAT 50-69%','CSAT <50%','Sin datos'], datasets:[{ data:[good,mid,bad,none], backgroundColor:['#1a7a4a','#8a6000','#c02a2a','#d0cdc4'], borderWidth:3, borderColor:'#fff' }]}, options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},color:'#6b6560',boxWidth:10,padding:12}}, tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} agentes`}}}}});
+  pieChart=new Chart($('cPie'),{type:'doughnut',data:{labels:['CSAT ≥70%','CSAT 50-69%','CSAT <50%','Sin datos'],datasets:[{data:[good,mid,bad,none],backgroundColor:['#1a7a4a','#8a6000','#c02a2a','#d0cdc4'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},color:'#6b6560',boxWidth:10,padding:12}},tooltip:{...tCfg,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} agentes`}}}}});
 }
+
 async function loadData(){
-  const from = $('df').value, to = $('dt').value;
+  const from=$('df').value, to=$('dt').value;
   if(!from||!to){alert('Selecciona fechas');return;}
   setStatus('load','Cargando datos…');
-  $('btnLoad').disabled = true;
-  try {
-    const res = await fetch(`${API_BASE}/api/agents?date_from=${from}&date_to=${to}`);
+  $('btnLoad').disabled=true;
+  try{
+    const res=await fetch(`${API_BASE}/api/agents?date_from=${from}&date_to=${to}`);
     if(!res.ok) throw new Error(`API error ${res.status}`);
-    const json = await res.json();
-    agentData = calcScores(json.agents);
-    const top = agentData.find(a=>a.score!=null);
-    $('kConv').textContent = fmtNum(json.total_convs);
-    $('kClosed').textContent = fmtNum(json.total_closed);
-    $('kCsat').textContent = json.global_csat!=null ? json.global_csat.toFixed(1)+'%' : '—';
-    $('kTop').textContent = top ? top.name.split(' ')[0] : '—';
-    $('kTopSub').textContent = top ? `Score ${top.score} · ${top.conv} convs` : '—';
-    $('sPeriod').textContent = `${json.period.from} → ${json.period.to}`;
-    $('sCount').textContent = `${agentData.length} agentes`;
-    $('lastUpdated').textContent = `Actualizado: ${new Date().toLocaleTimeString('es-ES')}`;
-    $('tfDate').textContent = `Periodo: ${json.period.from} al ${json.period.to}`;
+    const json=await res.json();
+    agentData=calcScores(json.agents);
+    const top=agentData.find(a=>a.score!=null);
+    $('kConv').textContent=fmtNum(json.total_convs);
+    $('kClosed').textContent=fmtNum(json.total_closed);
+    $('kCsat').textContent=json.global_csat!=null?json.global_csat.toFixed(1)+'%':'—';
+    $('kTop').textContent=top?top.name.split(' ')[0]:'—';
+    $('kTopSub').textContent=top?`Score ${top.score} · ${top.conv} convs`:'—';
+    $('sPeriod').textContent=`${json.period.from} → ${json.period.to}`;
+    $('sCount').textContent=`${agentData.length} agentes`;
+    $('lastUpdated').textContent=`Actualizado: ${new Date().toLocaleTimeString('es-ES')}`;
+    $('tfDate').textContent=`Periodo: ${json.period.from} al ${json.period.to}`;
     renderCharts(agentData);
     renderTable(agentData);
-    setStatus('ok', `${json.total_convs} conversaciones cargadas`);
-  } catch(e){ setStatus('err', `Error: ${e.message}`); console.error(e); }
-  finally { $('btnLoad').disabled = false; }
+    setStatus('ok',`${json.total_convs} conversaciones cargadas`);
+  }catch(e){setStatus('err',`Error: ${e.message}`);console.error(e);}
+  finally{$('btnLoad').disabled=false;}
 }
-document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active')); b.classList.add('active'); cFilter=b.dataset.f; renderTable(agentData); }));
-$('search').addEventListener('input',e=>{ cSearch=e.target.value.toLowerCase(); renderTable(agentData); });
-document.querySelectorAll('thead th[data-col]').forEach(th=>th.addEventListener('click',()=>{ const col=th.dataset.col; if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=-1;} document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted')); th.classList.add('sorted'); agentData.sort((a,b)=>{let av=a[col],bv=b[col];if(av==null)return 1;if(bv==null)return-1;return(av>bv?1:av<bv?-1:0)*sortDir;}); renderTable(agentData); }));
-$('btnExport').addEventListener('click',()=>{ if(!agentData.length)return; const rows=[['Agente','Convs','CSAT (%)','Score','Cerradas','T.Resp (s)']]; agentData.forEach(a=>rows.push([a.name,a.conv,a.csat??'',a.score??'',a.closed,a.median_rt??''])); const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'})); a.download=`agentes_${$('df').value}_${$('dt').value}.csv`; a.click(); });
+
+document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));b.classList.add('active');cFilter=b.dataset.f;renderTable(agentData);}));
+$('search').addEventListener('input',e=>{cSearch=e.target.value.toLowerCase();renderTable(agentData);});
+document.querySelectorAll('thead th[data-col]').forEach(th=>th.addEventListener('click',()=>{const col=th.dataset.col;if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted'));th.classList.add('sorted');agentData.sort((a,b)=>{let av=a[col],bv=b[col];if(av==null)return 1;if(bv==null)return-1;return(av>bv?1:av<bv?-1:0)*sortDir;});renderTable(agentData);}));
+$('btnExport').addEventListener('click',()=>{if(!agentData.length)return;const rows=[['Agente','Convs','CSAT (%)','Score','Cerradas','T.Resp (s)']];agentData.forEach(a=>rows.push([a.name,a.conv,a.csat??'',a.score??'',a.closed,a.median_rt??'']));const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));a.download=`agentes_${$('df').value}_${$('dt').value}.csv`;a.click();});
 $('btnLoad').addEventListener('click', loadData);
-window.addEventListener('load', loadData);
 </script>
 </body>
 </html>
