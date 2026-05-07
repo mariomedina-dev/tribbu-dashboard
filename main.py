@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 import httpx, asyncio, datetime, os
 from collections import defaultdict
 
@@ -48,31 +49,29 @@ async def get_conversations_page(client, from_ts, to_ts, cursor=None):
     return r.json()
 
 async def get_all_conversations(client, from_ts, to_ts):
-    """Fetch all pages concurrently after getting first page."""
-    # Get first page to know total pages
     first = await get_conversations_page(client, from_ts, to_ts)
     all_convs = first.get("conversations", [])
     pages = first.get("pages", {})
-    total_pages = pages.get("total_pages", 1)
-
-    # Cap at 20 pages (3000 convs) for performance
-    total_pages = min(total_pages, 20)
-
+    total_pages = min(pages.get("total_pages", 1), 20)
     if total_pages <= 1:
         return all_convs
-
-    # Fetch remaining pages sequentially but with timeout
     cursor = pages.get("next", {}).get("starting_after")
     page = 2
     while cursor and page <= total_pages:
         data = await get_conversations_page(client, from_ts, to_ts, cursor)
-        convs = data.get("conversations", [])
-        all_convs.extend(convs)
+        all_convs.extend(data.get("conversations", []))
         nxt = data.get("pages", {}).get("next", {})
         cursor = nxt.get("starting_after") if nxt else None
         page += 1
-
     return all_convs
+
+@app.get("/", response_class=HTMLResponse)
+async def serve_dashboard():
+    try:
+        with open("dashboard.html", "r", encoding="utf-8") as f:
+            return f.read()
+    except:
+        return "<h1>Dashboard no encontrado</h1>"
 
 @app.get("/api/agents")
 async def get_agents(
@@ -80,18 +79,15 @@ async def get_agents(
     date_to:   str = Query(default=None),
 ):
     now = datetime.datetime.utcnow()
-
     if date_from:
         dt_from = datetime.datetime.strptime(date_from, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
     else:
         dt_from = now.replace(hour=0, minute=0, second=0, microsecond=0)
-
     if date_to:
         dt_to = datetime.datetime.strptime(date_to, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
     else:
         dt_to = now.replace(hour=23, minute=59, second=59)
 
-    # Madrid UTC+2
     from_ts = int(dt_from.timestamp()) - 7200
     to_ts   = int(dt_to.timestamp())
 
@@ -102,7 +98,6 @@ async def get_agents(
         )
 
     stats = defaultdict(lambda: {"conv": 0, "closed": 0, "ratings": [], "rt": []})
-
     for c in convs:
         aid = str(c.get("admin_assignee_id") or "")
         if not aid:
@@ -124,27 +119,21 @@ async def get_agents(
         rt_sorted = sorted(s["rt"])
         median_rt = rt_sorted[len(rt_sorted) // 2] if rt_sorted else None
         result.append({
-            "id":           aid,
-            "name":         admins_map.get(aid, f"Agente {aid}"),
-            "conv":         s["conv"],
-            "closed":       s["closed"],
-            "csat":         csat,
-            "csat_ratings": len(ratings),
-            "median_rt":    median_rt,
+            "id": aid, "name": admins_map.get(aid, f"Agente {aid}"),
+            "conv": s["conv"], "closed": s["closed"],
+            "csat": csat, "csat_ratings": len(ratings), "median_rt": median_rt,
         })
 
     result.sort(key=lambda x: -x["conv"])
-
     all_ratings = [r for a in result for r in stats[a["id"]]["ratings"]]
     global_csat = round(sum(1 for r in all_ratings if r >= 4) / len(all_ratings) * 100, 1) if all_ratings else None
 
     return {
-        "period":       {"from": date_from or str(dt_from.date()), "to": date_to or str(dt_to.date())},
-        "total_convs":  sum(a["conv"] for a in result),
+        "period": {"from": date_from or str(dt_from.date()), "to": date_to or str(dt_to.date())},
+        "total_convs": sum(a["conv"] for a in result),
         "total_closed": sum(a["closed"] for a in result),
-        "global_csat":  global_csat,
-        "agents":       result,
-        "note":         f"Mostrando hasta 3.000 conversaciones por periodo",
+        "global_csat": global_csat,
+        "agents": result,
         "generated_at": datetime.datetime.utcnow().isoformat() + "Z",
     }
 
