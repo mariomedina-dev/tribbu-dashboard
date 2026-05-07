@@ -243,7 +243,6 @@ td{padding:11px 14px;vertical-align:middle;}
           <th onclick="sortBy('name')">Agente</th>
           <th onclick="sortBy('vol')">Convs. Respondidas</th>
           <th onclick="sortBy('csat')">CSAT</th>
-          <th onclick="sortBy('cx')">CX Score</th>
           <th onclick="sortBy('rub')">Nivel Rúbrica</th>
           <th onclick="sortBy('score')">Score Final ↓</th>
         </tr></thead>
@@ -251,7 +250,7 @@ td{padding:11px 14px;vertical-align:middle;}
       </table>
     </div>
     <div class="tf">
-      <span><span id="rowCount">0</span> agentes · Score = 33% Vol + 33% CSAT + 33% Rúbrica · Solo conv. respondidas</span>
+      <span><span id="rowCount">0</span> agentes · Score = 33% Vol + 33% CSAT + 33% Rúbrica · Solo conv. respondidas · Haz clic en un agente para ver detalle</span>
       <span id="tfPeriod">—</span>
     </div>
   </div>
@@ -303,7 +302,7 @@ const DAILY_DATA = {"2026-05-07": {"Mayra Acosta": {"conv": 234, "ratings": [], 
 const AUTH_VOL = {"Luis":2041,"Mayra Acosta":1809,"Andrés Calderón":1702,"Alexander Reyes":1290,"Katherin":1284,"Daniela Armas":1214,"Marianny":1186,"Valeria":1088,"Diana Velasquez":1041,"Gabriel Arroyo":923,"Karla Puerta":860,"Paola Perez":814,"Katerine Alzuro":785,"Ynomarliz Vasquez":733,"Génesis Salazar":689,"Joisimar Navarro":649,"Siham":583,"Marta Cánovas":563,"Virginia":541,"Sergio Hurtado":536,"Tano Spinelli":510,"Yenssi López":408,"Génesis Aponte":358,"Kevin Almeyda":262,"Joanna Mogollón":232};
 const AUTH_CSAT = {"Luis":72.0,"Mayra Acosta":68.9,"Andrés Calderón":60.0,"Alexander Reyes":66.7,"Katherin":51.2,"Daniela Armas":42.9,"Marianny":73.2,"Valeria":55.6,"Diana Velasquez":65.9,"Gabriel Arroyo":36.8,"Karla Puerta":42.9,"Paola Perez":45.5,"Katerine Alzuro":57.7,"Ynomarliz Vasquez":38.5,"Génesis Salazar":46.2,"Joisimar Navarro":20.0,"Siham":60.0,"Marta Cánovas":85.7,"Virginia":61.5,"Sergio Hurtado":29.4,"Tano Spinelli":50.0,"Yenssi López":20.0,"Génesis Aponte":40.0,"Kevin Almeyda":66.7,"Joanna Mogollón":33.3};
 
-let agentData=[], cFilter='all', cSearch='', sortKey='score', sortDir=-1;
+let agentData=[], cFilter='all', cSearch='', sortKey='score', sortDir=1;
 let volChart=null, pieChart=null, cxChart=null;
 const $=id=>document.getElementById(id);
 const fmtN=n=>Number(n).toLocaleString('es-ES');
@@ -434,18 +433,18 @@ function renderTable(){
   let data=[...agentData];
   if(cFilter!=='all') data=data.filter(a=>a.level===cFilter);
   if(cSearch) data=data.filter(a=>a.name.toLowerCase().includes(cSearch.toLowerCase()));
-  data.sort((a,b)=>sortKey==='name'?sortDir*a.name.localeCompare(b.name):sortDir*(b[sortKey]||0)-(sortDir*(a[sortKey]||0)));
-  const ranked=agentData.map(a=>a.name);
+  data.sort((a,b)=>sortKey==='name'?a.name.localeCompare(b.name):(b[sortKey]||0)-(a[sortKey]||0));
+  const ranked=[...agentData].sort((a,b)=>b.score-a.score).map(a=>a.name);
   $('tbody').innerHTML=data.map(a=>{
-    const c=qColor(a.rub), cxw=Math.round((a.cx-1)/4*100);
+    const c=qColor(a.rub);
+    const pos=ranked.indexOf(a.name)+1;
     return `<tr onclick="showDetail('${a.name}')">
-      <td class="rk">${medal(ranked.indexOf(a.name))}</td>
+      <td class="rk" style="font-family:var(--font-m);font-size:12px;color:var(--black4);font-weight:600">${pos}</td>
       <td class="aname">${a.name}</td>
       <td class="num">${fmtN(a.vol)}</td>
       <td><span class="${csatCls(a.csat)}">${a.csat.toFixed(1)}%</span></td>
-      <td><div class="cx-wrap"><span class="cx-n">${a.cx.toFixed(2)}/5</span><div class="cx-bar"><div class="cx-fill" style="width:${cxw}%;background:${c}"></div></div></div></td>
       <td>${levelBadge(a.level,a.rub)}</td>
-      <td><div class="qrow"><span class="qnum" style="color:${c}">${a.score}%</span><div class="qbg"><div class="qfill" style="width:${a.score}%;background:${c}"></div></div></div></td>
+      <td style="text-align:center"><span style="font-family:var(--font-m);font-size:28px;font-weight:800;letter-spacing:-0.04em;color:${c};line-height:1">${a.score}</span></td>
     </tr>`;
   }).join('');
   $('rowCount').textContent=data.length;
