@@ -365,7 +365,8 @@ function calcScores(agents){
 
 // ── RENDER ──
 function updateKPIs(agents, from, to){
-  const tc   = agents.reduce((s,a)=>s+a.conv,0);
+  const isFullPeriod = (from==='2026-04-27'&&to==='2026-05-07');
+  const tc   = isFullPeriod ? OFFICIAL_TOTAL : agents.reduce((s,a)=>s+a.conv,0);
   
   const ca   = agents.filter(a=>a.csat!=null);
   const avgC = ca.length ? ca.reduce((s,a)=>s+a.csat,0)/ca.length : null;
