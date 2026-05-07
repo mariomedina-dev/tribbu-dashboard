@@ -161,9 +161,9 @@ td{padding:11px 14px;vertical-align:middle;}
   <div class="topbar-right">
     <div class="quick-dates">
       <span class="qd active" data-range="all">27 abr–7 may</span>
-      <span class="qd" data-range="week">Últ. 7 días</span>
-      <span class="qd" data-range="yesterday">Ayer</span>
-      <span class="qd" data-range="today">Hoy</span>
+      <span class="qd" data-range="week">1–7 may</span>
+      <span class="qd" data-range="yesterday">Ayer (6 may)</span>
+      <span class="qd" data-range="today">Hoy (7 may)</span>
     </div>
     <div class="date-range">
       <label>Desde</label>
@@ -301,6 +301,71 @@ const DAILY_DATA = {"2026-05-07": {"Mayra Acosta": {"conv": 234, "ratings": [], 
 
 const AUTH_VOL = {"Luis":2041,"Mayra Acosta":1809,"Andrés Calderón":1702,"Alexander Reyes":1290,"Katherin":1284,"Daniela Armas":1214,"Marianny":1186,"Valeria":1088,"Diana Velasquez":1041,"Gabriel Arroyo":923,"Karla Puerta":860,"Paola Perez":814,"Katerine Alzuro":785,"Ynomarliz Vasquez":733,"Génesis Salazar":689,"Joisimar Navarro":649,"Siham":583,"Marta Cánovas":563,"Virginia":541,"Sergio Hurtado":536,"Tano Spinelli":510,"Yenssi López":408,"Génesis Aponte":358,"Kevin Almeyda":262,"Joanna Mogollón":232};
 const AUTH_CSAT = {"Luis":72.0,"Mayra Acosta":68.9,"Andrés Calderón":60.0,"Alexander Reyes":66.7,"Katherin":51.2,"Daniela Armas":42.9,"Marianny":73.2,"Valeria":55.6,"Diana Velasquez":65.9,"Gabriel Arroyo":36.8,"Karla Puerta":42.9,"Paola Perez":45.5,"Katerine Alzuro":57.7,"Ynomarliz Vasquez":38.5,"Génesis Salazar":46.2,"Joisimar Navarro":20.0,"Siham":60.0,"Marta Cánovas":85.7,"Virginia":61.5,"Sergio Hurtado":29.4,"Tano Spinelli":50.0,"Yenssi López":20.0,"Génesis Aponte":40.0,"Kevin Almeyda":66.7,"Joanna Mogollón":33.3};
+
+// ── CSV_DATA: datos reales de Intercom exports ──
+const CSV_DATA = {
+  "2026-05-07": {
+    "Mayra Acosta":{vol:242,csat:60.9},"Luis":{vol:110,csat:76.5},"Génesis Salazar":{vol:101,csat:60.0},
+    "Alexander Reyes":{vol:93,csat:50.0},"Karla Puerta":{vol:82,csat:45.5},"Katerine Alzuro":{vol:78,csat:60.0},
+    "Joisimar Navarro":{vol:65,csat:16.7},"Andrés Calderón":{vol:62,csat:58.3},"Kevin Almeyda":{vol:48,csat:75.0},
+    "Sergio Hurtado":{vol:47,csat:33.3},"Tano Spinelli":{vol:25,csat:100.0},"Siham":{vol:24,csat:null},
+    "Marianny":{vol:23,csat:50.0},"Katherin":{vol:21,csat:55.6},"Marta Cánovas":{vol:21,csat:85.7},
+    "Virginia":{vol:20,csat:66.7},"Daniela Armas":{vol:18,csat:50.0},"Ynomarliz Vasquez":{vol:15,csat:33.3},
+    "Génesis Aponte":{vol:15,csat:null},"Paola Perez":{vol:13,csat:0.0},"Yenssi López":{vol:13,csat:null},
+    "Valeria":{vol:11,csat:50.0},"Diana Velasquez":{vol:9,csat:50.0},"Gabriel Arroyo":{vol:0,csat:57.1},
+    "Joanna Mogollón":{vol:0,csat:50.0},"Gabriel Silva":{vol:0,csat:null}
+  },
+  "2026-05-06": {
+    "Mayra Acosta":{vol:335,csat:83.3},"Daniela Armas":{vol:312,csat:42.9},"Andrés Calderón":{vol:242,csat:58.6},
+    "Alexander Reyes":{vol:227,csat:75.0},"Luis":{vol:196,csat:62.5},"Gabriel Arroyo":{vol:191,csat:28.6},
+    "Karla Puerta":{vol:181,csat:25.0},"Katherin":{vol:170,csat:57.9},"Joisimar Navarro":{vol:143,csat:11.1},
+    "Ynomarliz Vasquez":{vol:139,csat:33.3},"Katerine Alzuro":{vol:132,csat:58.8},"Paola Perez":{vol:127,csat:25.0},
+    "Génesis Salazar":{vol:113,csat:33.3},"Sergio Hurtado":{vol:107,csat:0.0},"Diana Velasquez":{vol:93,csat:60.0},
+    "Virginia":{vol:58,csat:33.3},"Valeria":{vol:55,csat:56.0},"Marianny":{vol:55,csat:72.7},
+    "Tano Spinelli":{vol:43,csat:50.0},"Marta Cánovas":{vol:37,csat:100.0},"Kevin Almeyda":{vol:36,csat:null},
+    "Siham":{vol:3,csat:50.0},"Génesis Aponte":{vol:0,csat:60.0},"Yenssi López":{vol:0,csat:0.0},
+    "Joanna Mogollón":{vol:0,csat:0.0},"Gabriel Silva":{vol:0,csat:null}
+  },
+  "week_0501_0507": {
+    "Mayra Acosta":{vol:1233,csat:67.7},"Luis":{vol:1154,csat:68.8},"Daniela Armas":{vol:1066,csat:42.4},
+    "Alexander Reyes":{vol:847,csat:64.1},"Andrés Calderón":{vol:753,csat:60.0},"Paola Perez":{vol:686,csat:35.7},
+    "Diana Velasquez":{vol:651,csat:67.5},"Ynomarliz Vasquez":{vol:643,csat:37.5},"Gabriel Arroyo":{vol:567,csat:40.9},
+    "Katherin":{vol:563,csat:51.2},"Marta Cánovas":{vol:543,csat:77.8},"Karla Puerta":{vol:541,csat:38.9},
+    "Katerine Alzuro":{vol:489,csat:57.7},"Génesis Salazar":{vol:480,csat:46.2},"Tano Spinelli":{vol:449,csat:50.0},
+    "Joisimar Navarro":{vol:419,csat:18.8},"Marianny":{vol:394,csat:73.2},"Valeria":{vol:341,csat:54.5},
+    "Sergio Hurtado":{vol:318,csat:35.0},"Yenssi López":{vol:295,csat:20.0},"Virginia":{vol:258,csat:64.3},
+    "Siham":{vol:206,csat:60.0},"Kevin Almeyda":{vol:135,csat:75.0},"Génesis Aponte":{vol:127,csat:40.0},
+    "Joanna Mogollón":{vol:92,csat:33.3},"Gabriel Silva":{vol:0,csat:null}
+  }
+};
+function buildFromCSV(key,label){
+  const rows=CSV_DATA[key]; if(!rows) return;
+  agentData=RUBRIC_DATA.map(a=>{
+    const row=rows[a.name];
+    const vol=row?row.vol:0;
+    const csat=(row&&row.csat!==null&&row.csat!==undefined)?row.csat:AUTH_CSAT[a.name];
+    const volPct=Math.min(vol/MAX_VOL,1)*100;
+    const score=Math.round(volPct*0.33+csat*0.33+a.rub*0.33);
+    return {...a,vol,csat,score,medRt:null,level:a.rub>=75?'ex':a.rub>=60?'bu':a.rub>=45?'co':'me'};
+  }).sort((a,b)=>b.score-a.score);
+  const total=agentData.reduce((s,a)=>s+a.vol,0);
+  const wc=agentData.filter(a=>a.csat!=null);
+  const avgCsat=wc.reduce((s,a)=>s+a.csat,0)/(wc.length||1);
+  const avgCx=agentData.reduce((s,a)=>s+a.cx,0)/agentData.length;
+  const top=agentData[0];
+  $('heroConvs').textContent=fmtN(total); $('heroPeriod').textContent=label;
+  $('heroAgents').textContent=agentData.length+' agentes';
+  $('sPeriod').textContent=label; $('sCount').textContent=agentData.length+' agentes · '+fmtN(total)+' convs';
+  $('lastUpdated').textContent='Actualizado: '+new Date().toLocaleTimeString('es-ES');
+  $('liveTxt').textContent='En vivo'; $('tfPeriod').textContent=label;
+  $('kConv').textContent=fmtN(total); $('kEx').textContent=agentData.filter(a=>a.rub>=75).length;
+  $('kCsat').textContent=avgCsat.toFixed(1)+'%'; $('kCsatSub').textContent=label;
+  $('kCx').textContent=avgCx.toFixed(2)+'/5';
+  $('kTop').textContent=top?top.name.split(' ')[0]:'—';
+  $('kTopSub').textContent=top?'Score '+top.score+' · '+fmtN(top.vol)+' convs':'—';
+  $('sDot').className='s-ok'; $('sTxt').textContent=fmtN(total)+' conversaciones · '+label;
+  renderCharts(); renderInsights(); renderTable();
+}
 
 let agentData=[], cFilter='all', cSearch='', sortKey='score', sortDir=1;
 let volChart=null, pieChart=null, cxChart=null;
@@ -484,14 +549,19 @@ document.querySelectorAll('.qd').forEach(b=>b.addEventListener('click',()=>{
   b.classList.add('active');
   const r=b.dataset.range;
   let from='2026-04-27',to='2026-05-07';
-  const clamp=d=>d<'2026-04-27'?'2026-04-27':d>'2026-05-07'?'2026-05-07':d;
-  const fmtD=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${dd}`;};
-  const now=new Date('2026-05-07');
-  if(r==='today'){from=to=clamp(fmtD(now));}
-  else if(r==='yesterday'){const y=new Date(now);y.setDate(y.getDate()-1);from=to=clamp(fmtD(y));}
-  else if(r==='week'){const w=new Date(now);w.setDate(w.getDate()-6);from=clamp(fmtD(w));}
-  $('df').value=from;$('dt').value=to;
-  renderAll(from,to);
+  if(r==='all'){
+    $('df').value='2026-04-27'; $('dt').value='2026-05-07';
+    renderAll('2026-04-27','2026-05-07');
+  } else if(r==='week'){
+    $('df').value='2026-05-01'; $('dt').value='2026-05-07';
+    buildFromCSV('week_0501_0507','1–7 may');
+  } else if(r==='yesterday'){
+    $('df').value='2026-05-06'; $('dt').value='2026-05-06';
+    buildFromCSV('2026-05-06','6 may (ayer)');
+  } else if(r==='today'){
+    $('df').value='2026-05-07'; $('dt').value='2026-05-07';
+    buildFromCSV('2026-05-07','7 may (hoy)');
+  }
 }));
 $('btnApply').addEventListener('click',()=>{
   document.querySelectorAll('.qd').forEach(x=>x.classList.remove('active'));
