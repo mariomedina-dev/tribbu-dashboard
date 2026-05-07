@@ -27,62 +27,82 @@ async def get_admins(client: httpx.AsyncClient) -> dict:
     r.raise_for_status()
     return {str(a["id"]): a["name"] for a in r.json().get("admins", [])}
 
-async def get_all_conversations(client: httpx.AsyncClient, from_ts: int, to_ts: int) -> list:
-    all_convs = []
-    cursor = None
-    while True:
-        payload = {
-            "query": {
-                "operator": "AND",
-                "value": [
-                    {"field": "created_at", "operator": ">=", "value": from_ts},
-                    {"field": "created_at", "operator": "<=", "value": to_ts},
-                ]
-            },
-            "pagination": {"per_page": 150}
-        }
-        if cursor:
-            payload["pagination"]["starting_after"] = cursor
-        r = await client.post(
-            "https://api.intercom.io/conversations/search",
-            headers=get_headers(),
-            json=payload
-        )
-        r.raise_for_status()
-        data = r.json()
+async def get_conversations_page(client, from_ts, to_ts, cursor=None):
+    payload = {
+        "query": {
+            "operator": "AND",
+            "value": [
+                {"field": "created_at", "operator": ">=", "value": from_ts},
+                {"field": "created_at", "operator": "<=", "value": to_ts},
+            ]
+        },
+        "pagination": {"per_page": 150}
+    }
+    if cursor:
+        payload["pagination"]["starting_after"] = cursor
+    r = await client.post(
+        "https://api.intercom.io/conversations/search",
+        headers=get_headers(), json=payload
+    )
+    r.raise_for_status()
+    return r.json()
+
+async def get_all_conversations(client, from_ts, to_ts):
+    """Fetch all pages concurrently after getting first page."""
+    # Get first page to know total pages
+    first = await get_conversations_page(client, from_ts, to_ts)
+    all_convs = first.get("conversations", [])
+    pages = first.get("pages", {})
+    total_pages = pages.get("total_pages", 1)
+
+    # Cap at 20 pages (3000 convs) for performance
+    total_pages = min(total_pages, 20)
+
+    if total_pages <= 1:
+        return all_convs
+
+    # Fetch remaining pages sequentially but with timeout
+    cursor = pages.get("next", {}).get("starting_after")
+    page = 2
+    while cursor and page <= total_pages:
+        data = await get_conversations_page(client, from_ts, to_ts, cursor)
         convs = data.get("conversations", [])
         all_convs.extend(convs)
-        pages = data.get("pages", {})
-        nxt = pages.get("next", {})
+        nxt = data.get("pages", {}).get("next", {})
         cursor = nxt.get("starting_after") if nxt else None
-        if not cursor or not convs:
-            break
-        if len(all_convs) >= 5000:
-            break
+        page += 1
+
     return all_convs
 
 @app.get("/api/agents")
 async def get_agents(
-    date_from: str = Query(default=None, description="YYYY-MM-DD"),
-    date_to:   str = Query(default=None, description="YYYY-MM-DD"),
+    date_from: str = Query(default=None),
+    date_to:   str = Query(default=None),
 ):
     now = datetime.datetime.utcnow()
+
     if date_from:
         dt_from = datetime.datetime.strptime(date_from, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
     else:
         dt_from = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
     if date_to:
         dt_to = datetime.datetime.strptime(date_to, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
     else:
         dt_to = now.replace(hour=23, minute=59, second=59)
+
+    # Madrid UTC+2
     from_ts = int(dt_from.timestamp()) - 7200
     to_ts   = int(dt_to.timestamp())
-    async with httpx.AsyncClient(timeout=60) as client:
+
+    async with httpx.AsyncClient(timeout=55) as client:
         admins_map, convs = await asyncio.gather(
             get_admins(client),
             get_all_conversations(client, from_ts, to_ts)
         )
+
     stats = defaultdict(lambda: {"conv": 0, "closed": 0, "ratings": [], "rt": []})
+
     for c in convs:
         aid = str(c.get("admin_assignee_id") or "")
         if not aid:
@@ -96,6 +116,7 @@ async def get_agents(
         rt = (c.get("statistics") or {}).get("time_to_admin_reply")
         if rt:
             stats[aid]["rt"].append(rt)
+
     result = []
     for aid, s in stats.items():
         ratings = s["ratings"]
@@ -111,15 +132,19 @@ async def get_agents(
             "csat_ratings": len(ratings),
             "median_rt":    median_rt,
         })
+
     result.sort(key=lambda x: -x["conv"])
+
     all_ratings = [r for a in result for r in stats[a["id"]]["ratings"]]
     global_csat = round(sum(1 for r in all_ratings if r >= 4) / len(all_ratings) * 100, 1) if all_ratings else None
+
     return {
         "period":       {"from": date_from or str(dt_from.date()), "to": date_to or str(dt_to.date())},
         "total_convs":  sum(a["conv"] for a in result),
         "total_closed": sum(a["closed"] for a in result),
         "global_csat":  global_csat,
         "agents":       result,
+        "note":         f"Mostrando hasta 3.000 conversaciones por periodo",
         "generated_at": datetime.datetime.utcnow().isoformat() + "Z",
     }
 
